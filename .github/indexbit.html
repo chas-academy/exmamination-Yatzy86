@@ -7,11 +7,11 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="container">
   <h1>Budget- och utgiftskoll</h1>
 
   <!-- Formulär för att lägga till transaktioner -->
-  <div>
-    <div style="margin-bottom: 20px">
+  
     <label for="desc">Beskrivning:</label>
     <input type="text" id="desc" placeholder="Ex: Mat, Hyra" />
   
@@ -23,21 +23,26 @@
   <!-- Knappar för inkomst och utgift -->
   <button id="incomeBtn">Lägg till Inkomst</button>
   <button id="expenseBtn">Lägg till Utgift</button>
-</div>
+
+<div class="lists">
+<div class="list-section">
   <!-- Lista med inkomster -->
   <h2>Inkomster</h2>
   <ul id="incomeList"></ul>
 
+  </div>
+<div class="list-section">
   <!-- Lista med utgifter -->
   <h2>Utgifter</h2>
   <ul id="expenseList"></ul>
-
+  </div>
+  </div>
   <!-- Lista med transaktioner -->
   <h2>Transaktioner</h2>
   <ul id="transactionList"></ul>
 
   <!-- Visning av totalt saldo -->
   <h2>Saldo: <span id="balance">0</span> kr</h2>
-
+</div>
 </body>
 </html>

@@ -2,24 +2,23 @@
  * @jest-environment jsdom
  */
 
-// In most Jest setups, you do *not* need to import { expect } from "@jest/globals";
-// Jest provides a global `expect` automatically.
-
-
-// ...existing code...
 describe("Transaction functionality", () => {
   beforeEach(() => {
-    jest.resetModules();
     document.body.innerHTML = `
       <input id="desc" />
       <input id="amount" />
       <button id="incomeBtn"></button>
       <button id="expenseBtn"></button>
+      <button id="resetBtn"></button>
       <ul id="incomeList"></ul>
       <ul id="expenseList"></ul>
-      <div id="balance"></div>
+      <ul id="transactionList"></ul>
+      <span id="balance"></span>
     `;
-    require("./src/script.js");
+
+    // Viktigt: efter DOM skapats!
+    jest.resetModules(); // rensa cache
+    require("./src/script.js");// nu laddas scriptet med DOM tillgänglig
   });
 
   it("adds an income and updates balance", () => {
@@ -27,33 +26,33 @@ describe("Transaction functionality", () => {
     const amountInput = document.getElementById("amount");
     const incomeBtn = document.getElementById("incomeBtn");
 
-    const description = "Salary";
-    const amount = "1000";
-
-    descInput.value = description;
-    amountInput.value = amount;
+    descInput.value = "Lön";
+    amountInput.value = "1000";
     incomeBtn.click();
 
     expect(document.getElementById("incomeList").textContent)
-      .toContain(`${description} - ${amount} kr (Inkomst)`);
-    expect(document.getElementById("balance").textContent).toBe(amount);
+      .toContain("Lön - 1000 kr (Inkomst)");
+    expect(document.getElementById("balance").textContent).toBe("1000");
   });
 
   it("adds an expense and updates balance", () => {
     const descInput = document.getElementById("desc");
     const amountInput = document.getElementById("amount");
+    const incomeBtn = document.getElementById("incomeBtn");
     const expenseBtn = document.getElementById("expenseBtn");
 
-    const description = "Groceries";
-    const amount = "200";
+    // Lägg först till en inkomst (1000)
+    descInput.value = "Lön";
+    amountInput.value = "1000";
+    incomeBtn.click();
 
-    descInput.value = description;
-    amountInput.value = amount;
+    // Sen lägg till en utgift (200)
+    descInput.value = "Hyra";
+    amountInput.value = "200";
     expenseBtn.click();
 
     expect(document.getElementById("expenseList").textContent)
-      .toContain(`${description} - ${amount} kr (Utgift)`);
-    expect(document.getElementById("balance").textContent).toBe(`-${amount}`);
+      .toContain("Hyra - -200 kr (Utgift)");
+    expect(document.getElementById("balance").textContent).toBe("800");
   });
 });
-
